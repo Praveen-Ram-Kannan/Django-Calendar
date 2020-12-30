@@ -115,14 +115,21 @@ def search_event(request):
 
 def search_details(request):
     temp =request.GET.getlist('event_name')
-    event = Event.objects.get(title=temp[0])
-    print(event)
-    eventmember = EventMember.objects.filter(event=event)
-    context = {
-        'event': event,
-        'eventmember': eventmember
-    }
-    return render(request, 'event-details.html', context)
+    try:
+        event = Event.objects.get(title=temp[0])
+        print(event)
+        eventmember = EventMember.objects.filter(event=event)
+        print(eventmember)
+        context = {
+            'event': event,
+            'eventmember': eventmember
+        }
+        return render(request, 'event-details.html', context)
+    except Exception as e:
+        print('In exception Block')
+        print(e)
+        return render(request, 'error.html')
+
 
 
 class EventMemberDeleteView(generic.DeleteView):
